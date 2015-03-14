@@ -8,6 +8,8 @@
 
     :copyright: (c) 2011 by Matthew Frazier.
     :license: MIT/X11, see LICENSE for more details.
+    :modified by huangtao 2015-3-14
+    :modified is_authenticated 为其增加一个View名的功能，以便进行检查
 '''
 
 __version_info__ = ('0', '3', '0')
@@ -506,7 +508,7 @@ class UserMixin(object):
         return True
 
     @property
-    def is_authenticated(self):
+    def is_authenticated(self,func_name=None):
         return True
 
     @property
@@ -547,7 +549,7 @@ class AnonymousUserMixin(object):
     This is the default object for representing an anonymous user.
     '''
     @property
-    def is_authenticated(self):
+    def is_authenticated(self,func_name=None):
         return False
 
     @property
@@ -781,7 +783,7 @@ def login_required(func):
     def decorated_view(*args, **kwargs):
         if current_app.login_manager._login_disabled:
             return func(*args, **kwargs)
-        elif not current_user.is_authenticated:
+        elif not current_user.is_authenticated(func.__name__):
             return current_app.login_manager.unauthorized()
         return func(*args, **kwargs)
     return decorated_view
@@ -809,7 +811,7 @@ def fresh_login_required(func):
     def decorated_view(*args, **kwargs):
         if current_app.login_manager._login_disabled:
             return func(*args, **kwargs)
-        elif not current_user.is_authenticated:
+        elif not current_user.is_authenticated(func.__name__):
             return current_app.login_manager.unauthorized()
         elif not login_fresh():
             return current_app.login_manager.needs_refresh()

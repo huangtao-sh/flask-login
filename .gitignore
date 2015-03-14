@@ -2,7 +2,8 @@
 
 tests_output/
 __pycache__/
-
+build/
+dist/
 .tox
 .coverage
 
