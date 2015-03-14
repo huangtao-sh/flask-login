@@ -507,7 +507,6 @@ class UserMixin(object):
     def is_active(self):
         return True
 
-    @property
     def is_authenticated(self,func_name=None):
         return True
 
@@ -548,7 +547,6 @@ class AnonymousUserMixin(object):
     '''
     This is the default object for representing an anonymous user.
     '''
-    @property
     def is_authenticated(self,func_name=None):
         return False
 
